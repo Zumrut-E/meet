@@ -126,3 +126,21 @@ Scenario 1: Show a chart with the number of upcoming events in each city
 Given the user is viewing event data for multiple cities,
 When the user navigates to the event chart section,
 Then a chart should be displayed showing the number of upcoming events in each city.
+
+User (React App)
+   |
+   v
+Search for Events/Filter Actions
+   |
+   v
+API Gateway <---> AWS Lambda (serverless function triggered for filtering events or fetching event details)
+   |                                           |
+   v                                           v
+Request Sent                         Query to DB (event data, preferences)
+   |                                           |
+   v                                           v
+Response Sent (events filtered)       DB Response (event data)
+   |
+   v
+React App updates UI with filtered events
+
