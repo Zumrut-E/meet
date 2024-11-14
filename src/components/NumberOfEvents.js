@@ -1,29 +1,42 @@
-import React, { useState } from 'react';
+import { useState } from "react"
+import PropTypes from 'prop-types'
 
-const NumberOfEvents = ({ updateEventCount }) => {
-  const [eventCount, setEventCount] = useState(32);
+const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
+  const [number, setNumber] = useState(32)
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    if (value >= 1 && value <= 50) {
-      setEventCount(value);
-      updateEventCount(value); // Calls the parent's update function
+  const handleInputChanged = (e) => {
+    let value = e.target.value
+    setNumber(value)
+
+    let errorText;
+    if (isNaN(value) || value < 0) { 
+      errorText = 'Please enter a valid number'
+    } else {
+      errorText = '';
     }
-  };
-
+    setCurrentNOE(value);
+    setErrorAlert(errorText); 
+    
+  }
+ 
   return (
-    <div id="number-of-events">
-      <label htmlFor="event-count">Number of events:</label>
+    <div id="numberOfEvents">
+      <label htmlFor="number" id="number">
+        Number of Events:
       <input
-        type="number"
-        id="event-count"
-        value={eventCount}
-        onChange={handleChange}
-        role="textbox"
-        aria-label="number of events"
-      />
-    </div>
-  );
-};
+        type="text"
+        className="number"
+        value={number}
+        onChange={handleInputChanged}
+        />
+        </label>
+    </div> 
+  )
+}
 
 export default NumberOfEvents;
+
+NumberOfEvents.propTypes = {
+  setCurrentNOE: PropTypes.func.isRequired,
+  setErrorAlert: PropTypes.func.isRequired
+}

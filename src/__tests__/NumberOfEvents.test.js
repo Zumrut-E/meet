@@ -1,46 +1,29 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import NumberOfEvents from '../components/NumberOfEvents'; // adjust the path if needed
+import { render } from "@testing-library/react";
+import NumberOfEvents from "../components/NumberOfEvents";
+import { getEvents } from "../api";
+import userEvent from "@testing-library/user-event";
 
-describe('<NumberOfEvents />', () => {
-  let updateEventCount;
-
+describe('<NumberOfEvents /> component', () => {
+  let NumberOfEventsComponent;
   beforeEach(() => {
-    updateEventCount = jest.fn();
-    render(<NumberOfEvents updateEventCount={updateEventCount} />);
+    NumberOfEventsComponent = render(<NumberOfEvents setCurrentNOE={() => {}} setErrorAlert={() => {}} />)
+  })
+
+  test('number of events has the role of textbox', () => {
+    const input = NumberOfEventsComponent.queryByRole('textbox');
+    expect(input).toBeInTheDocument();
   });
 
-  test('renders the NumberOfEvents component with an input field', () => {
-    const inputField = screen.getByRole('textbox');
-    expect(inputField).toBeInTheDocument();
+  test('ensures the default value of textbox is 32', () => {
+    expect(NumberOfEventsComponent.getByRole('textbox')).toHaveValue('32');
   });
 
-  test('input field has a default value of 32', () => {
-    const inputField = screen.getByRole('textbox');
-    expect(inputField).toHaveValue(32);
-  });
-
-  test('value changes when the user types in the input field', async () => {
+  test('texbox value changes according to what user types', async () => {
+    numberOfEvents = NumberOfEventsComponent.getByRole('textbox');
     const user = userEvent.setup();
-    const inputField = screen.getByRole('textbox');
-
-    await user.type(inputField, '{backspace}{backspace}10');
-    expect(inputField).toHaveValue(10);
-  });
-
-  test('value stays within range when typing', async () => {
-    const user = userEvent.setup();
-    const inputField = screen.getByRole('textbox');
-
-    await user.type(inputField, '{backspace}{backspace}100');
-    expect(inputField).toHaveValue(50); // Ensures the max is capped at 50
-  });
-
-  test('calls updateEventCount when value is changed', async () => {
-    const user = userEvent.setup();
-    const inputField = screen.getByRole('textbox');
-
-    await user.type(inputField, '{backspace}{backspace}10');
-    expect(updateEventCount).toHaveBeenCalledWith(10);
-  });
+    await user.type(numberOfEvents, '{backspace}{backspace}10');
+    const allEvents = await getEvents();
+    NumberOfEventsComponent.rerender(<NumberOfEvents />);
+    expect(numberOfEvents).toHaveValue('10');
+  })
 });
