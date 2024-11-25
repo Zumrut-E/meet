@@ -2,6 +2,25 @@
   text-align: center;
 }
 
+.suggestions {
+  list-style-type: none;
+  border: 1px solid;
+  margin: 0 42rem;
+}
+
+#event-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 20rem 0;
+}
+
+#event-list li {
+  border-radius: 4px;
+  margin-top: 10px;
+  border: 1px solid #c3c3c3f2;
+  padding: 0 1rem 1rem;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -32,6 +51,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

@@ -28,7 +28,7 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {  // allLocations pass
   }, [`${allLocations}`]);
 
   return (
-    <div id="city-search">
+    <div id="city-search" style={{ margin: '1rem 0'}}>
       <input
         type="text"
         className="city"
